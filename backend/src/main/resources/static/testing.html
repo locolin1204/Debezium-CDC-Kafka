@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script>
+        var socket = new WebSocket('ws://localhost:8080/ws');  // Note: ws:// not http://
+        var stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/customer', function(message) {  // or your actual topic
+                console.log('Received: ' + message.body);
+                alert(message.body);  // or display it
+            });
+        }, function(error) {
+            console.error('Connection error: ' + error);
+        });
+    </script>
+</head>
+<body onload="connect()">
+<h1>WebSocket STOMP Test</h1>
+<p>Open browser console for logs.</p>
+</body>
+</html>

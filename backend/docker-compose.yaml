@@ -1,0 +1,57 @@
+services:
+  # 1. Zookeeper (Required for Kafka)
+  zookeeper:
+    image: quay.io/debezium/zookeeper:2.5
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+
+  # 2. Kafka (The Message Broker)
+  kafka:
+    image: quay.io/debezium/kafka:2.5
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    depends_on:
+      - zookeeper
+    environment:
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+      # Allows you to connect to Kafka from outside Docker (localhost:9092)
+      # and from inside Docker (kafka:9092)
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_LISTENERS=INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+
+  # 3. PostgreSQL (The Source Database)
+  postgres:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=inventory
+    # CRITICAL: Set WAL level to logical for Debezium to work
+    command: ["postgres", "-c", "wal_level=logical"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 4. Debezium Connect ( The "Linker")
+  connect:
+    image: quay.io/debezium/connect:2.5
+    ports:
+      - "8083:8083"
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_connect_statuses
+
+volumes:
+  postgres_data:
