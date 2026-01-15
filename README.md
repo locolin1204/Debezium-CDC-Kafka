@@ -1,10 +1,10 @@
 # Debezium CDC Kafka
 
-This project aims to test out how to integrate CDC, Kafka and Spring Boot all together.
+This project aims to test out how to integrate `Debezium`, `Kafka` and `Spring Boot` all together.
 
 ![diagram](images/diagram.png)
 
-We all have experienced where we wanted to keep track of the changes in the database, but polling doesn't sound right, it is wasting resources and ineffecient. Change Data Capture is the solution, where changes from the database is picked up and published to the MQ for the services to further process the changes.
+We all have experienced where we wanted to keep track of the changes in the database, but polling doesn't sound right, it is wasting resources and ineffecient. Change Data Capture (CDC) is the solution, where changes from the database is picked up and published to the MQ for the services to further process the changes.
 
 The following project simulate a simple ordering system, any `create`, `update`, `delete` of records will be captured by `Debezium` and published to `Kafka`.
 
@@ -15,7 +15,7 @@ The following project simulate a simple ordering system, any `create`, `update`,
 
 ## Demo
 
-The following video shows how the changes in database is monitored by Debezium, published to Kafka, pushed to Spring Boot, and finally streamed to Angular via Websocket
+The following video shows how the changes in database is monitored by `Debezium`, published to `Kafka`, pushed to `Spring Boot`, and finally streamed to `Angular` via Websocket
 ![diagram](images/demo.gif)
 
 ## Docker container services and ports
