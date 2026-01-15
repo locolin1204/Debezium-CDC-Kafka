@@ -1,6 +1,5 @@
 package com.locolin.cdc_kafka.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.Column;
@@ -10,12 +9,12 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 
 @Entity
 @Data
-@Table(name = "order")
+@Table(name = "\"order\"")
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Order {
@@ -25,7 +24,7 @@ public class Order {
     private String productName;
     private int quantity;
     @Column(name = "created_datetime")
-    LocalDateTime createdDatetime;
+    private OffsetDateTime createdDatetime;
     @Column(name = "last_modified_datetime")
-    LocalDateTime lastModifiedDatetime;
+    private OffsetDateTime lastModifiedDatetime;
 }
