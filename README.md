@@ -8,7 +8,7 @@ We all have experienced where we wanted to keep track of the changes in the data
 
 The following project simulate a simple ordering system, any `create`, `update`, `delete` of records will be captured by `Debezium` and published to `Kafka`.
 
-`Orders` is showing the latest orders
+`Orders` is showing the latest orders \
 `Orders Logs` is showing the history of changes in the database table
 
 ![diagram](images/frontend.png)
